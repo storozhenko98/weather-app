@@ -2,6 +2,7 @@ import { getLocation } from './location-getter';
 import {getWeather} from './weather-getter';
 import "../styles/styles.css"
 const mainView = document.querySelector("#mainView");
+//One Time Set Up 
 const appTitle = document.createElement("div");
 appTitle.id = "appTitle";
 appTitle.innerHTML = "weather";
@@ -66,6 +67,7 @@ const view = {
         choiceOne.addEventListener('click', ()=>{getWeather(res[0]["lat"], res[0]["lon"]).then(res=>{
             console.log(res);
             view.createWeatherView(res)})});
+        initView.appendChild(choiceOne)
         if(res.length>1){
             const choiceTwo = document.createElement("button");
             choiceTwo.innerHTML = res[1]["name"] + ", " + res[1]["state"] + ", " + res[1]["country"] + ".";
@@ -80,9 +82,6 @@ const view = {
             initView.innerHTML = "";
             view.createInitView();
         });
-        initView.appendChild(choiceOne);
-        //initView.appendChild(choiceTwo);
-        //initView.appendChild(choiceThree);
         initView.appendChild(goBack);
     },
     createWeatherView : function(res){
