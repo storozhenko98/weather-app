@@ -1,6 +1,10 @@
 import { getLocation } from './location-getter';
 import {getWeather} from './weather-getter';
-import "../styles/styles.css"
+import "../styles/styles.css";
+import cloudRain from "../assets/images/cloud-rain.svg";
+import cloudSnow from "../assets/images/cloud-snow.svg";
+import cloud from "../assets/images/cloud.svg";
+import sun from "../assets/images/sun.svg";
 const mainView = document.querySelector("#mainView");
 //One Time Set Up 
 const appTitle = document.createElement("div");
@@ -95,6 +99,45 @@ const view = {
         cityTemp.innerHTML = tempCelc + "C / " + tempF + "F";
         const weatherDescription = document.createElement("div");
         weatherDescription.innerHTML = res["weather"][0]["description"];
+        const weatherImageView = document.createElement("div");
+        //Weather Icon Function
+        if (res["weather"][0]["description"] == "overcast clouds" || res["weather"][0]["description"] == "broken clouds" || res["weather"][0]["main"] == "Mist" ){
+            const weatherIconOne = new Image();
+            const weatherIconTwo = new Image();
+            weatherIconOne.src = cloud;
+            weatherIconTwo.src = cloud;
+            weatherImageView.appendChild(weatherIconOne);
+            weatherImageView.appendChild(weatherIconTwo);
+        } else if(res["weather"][0]["description"] == "few clouds"){
+            const weatherIconOne = new Image();
+            const weatherIconTwo = new Image();
+            weatherIconOne.src = cloud;
+            weatherIconTwo.src = sun;
+            weatherImageView.appendChild(weatherIconOne);
+            weatherImageView.appendChild(weatherIconTwo);
+        } else if (res["weather"][0]["description"] == "scattered clouds"){
+            const weatherIconOne = new Image();
+            const weatherIconTwo = new Image();
+            const weatherIconThree = new Image();
+            weatherIconOne.src = cloud;
+            weatherIconTwo.src = sun;
+            weatherIconThree.src = cloud;
+            weatherImageView.appendChild(weatherIconOne);
+            weatherImageView.appendChild(weatherIconTwo);
+            weatherImageView.appendChild(weatherIconThree);
+        } else if (res["weather"][0]["description"] == "clear sky"){
+            const weatherIconOne = new Image();
+            weatherIconOne.src = sun;
+            weatherImageView.appendChild(weatherIconOne);
+        } else if (res["weather"][0]["main"] == "Rain" || res["weather"][0]["main"] == "Thunderstorm" || res["weather"][0]["main"] == "Drizzle"){
+            const weatherIconOne = new Image();
+            weatherIconOne.src = cloudRain;
+            weatherImageView.appendChild(weatherIconOne);
+        } else if (res["weather"][0]["main"] == "Snow"){
+            const weatherIconOne = new Image();
+            weatherIconOne.src = cloudSnow;
+            weatherImageView.appendChild(weatherIconOne);
+        };
         const goBack = document.createElement("button");
         goBack.innerHTML = "Return";
         goBack.addEventListener('click', () => {
@@ -104,6 +147,7 @@ const view = {
         initView.appendChild(cityName);
         initView.appendChild(cityTemp);
         initView.appendChild(weatherDescription);
+        initView.appendChild(weatherImageView);
         initView.appendChild(goBack);
     },
     createErrorView : () => {

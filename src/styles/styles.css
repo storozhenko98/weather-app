@@ -1,4 +1,14 @@
+@font-face {
+    font-family: 'robotothin';
+    src: url('../assets/fonts/roboto-thin-webfont.woff2') format('woff2'),
+         url('../assets/fonts/roboto-thin-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 
+}
+*{
+    font-family: 'robotothin';
+}
 #mainView{
     display: flex;
     flex-direction: column;
@@ -16,7 +26,9 @@
     width: 50vw;
     justify-self: center;
 }
-
+#initView div {
+    font-size: 24px;
+}
 input{
     text-align: center;
 }
@@ -50,7 +62,7 @@ div {
     }
     button {
         margin-top: 2vh;
-        height: 6vh;
+        min-height: 6vh;
         font-size: 24px;
         
     }
