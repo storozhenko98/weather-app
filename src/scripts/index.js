@@ -1,6 +1,11 @@
 import { getLocation } from './location-getter';
 import {getWeather} from './weather-getter';
+import "../styles/styles.css"
 const mainView = document.querySelector("#mainView");
+const appTitle = document.createElement("div");
+appTitle.id = "appTitle";
+appTitle.innerHTML = "weather";
+mainView.appendChild(appTitle);
 
 //UI + Controller
 const view = {
@@ -8,6 +13,7 @@ const view = {
         const initView = document.createElement("div");
         initView.id = "initView";
         const appTitle = document.createElement("div");
+        appTitle.id = "appTitle";
         appTitle.innerHTML = "weather";
         const locInput = document.createElement("input");
         locInput.type = "text";
@@ -20,11 +26,10 @@ const view = {
                 return;
             };
             getLocation(locInput.value).then(res => {
-            if (res == undefined || res.length < 1){view.createErrorView()} else {view.createChoiceView(res)}
+            if (res == undefined || res.length < 1){view.createErrorView()} else {
+                console.log(res);
+                view.createChoiceView(res)}
         });});
-
-        initView.appendChild(appTitle);
-        initView.appendChild(appTitle);
         initView.appendChild(locInput);
         initView.appendChild(submitButton);
         mainView.appendChild(initView);
@@ -44,27 +49,31 @@ const view = {
                 return;
             };
             getLocation(locInput.value).then(res => {
-            if (res == undefined || res.length < 1){view.createErrorView()} else {view.createChoiceView(res)}
+            if (res == undefined || res.length < 1){view.createErrorView()} else {
+                console.log(res);
+                view.createChoiceView(res)}
         });});
-
-        initView.appendChild(appTitle);
-        initView.appendChild(appTitle);
         initView.appendChild(locInput);
         initView.appendChild(submitButton);
 
     },
     createChoiceView : function(res){
+        console.log(res.length);
         const initView = document.getElementById("initView"); 
         initView.innerHTML = "";
         const choiceOne = document.createElement("button");
         choiceOne.innerHTML = res[0]["name"] + ", " + res[0]["state"] + ", " + res[0]["country"] + ".";
-        choiceOne.addEventListener('click', ()=>{getWeather(res[0]["lat"], res[0]["lon"]).then(res=>{view.createWeatherView(res)})});
-        const choiceTwo = document.createElement("button");
-        choiceTwo.innerHTML = res[1]["name"] + ", " + res[1]["state"] + ", " + res[1]["country"] + ".";
-        choiceTwo.addEventListener('click', ()=>{getWeather(res[0]["lat"], res[0]["lon"]).then(res=>{view.createWeatherView(res)})});
-        const choiceThree = document.createElement("button");
-        choiceThree.innerHTML = res[2]["name"] + ", " + res[2]["state"] + ", " + res[2]["country"] + ".";
-        choiceThree.addEventListener('click', ()=>{getWeather(res[0]["lat"], res[0]["lon"]).then(res=>{view.createWeatherView(res)})});
+        choiceOne.addEventListener('click', ()=>{getWeather(res[0]["lat"], res[0]["lon"]).then(res=>{
+            console.log(res);
+            view.createWeatherView(res)})});
+        if(res.length>1){
+            const choiceTwo = document.createElement("button");
+            choiceTwo.innerHTML = res[1]["name"] + ", " + res[1]["state"] + ", " + res[1]["country"] + ".";
+            choiceTwo.addEventListener('click', ()=>{getWeather(res[0]["lat"], res[0]["lon"]).then(res=>{view.createWeatherView(res)})});initView.appendChild(choiceTwo);};
+        if(res.length>2){
+            const choiceThree = document.createElement("button");
+            choiceThree.innerHTML = res[2]["name"] + ", " + res[2]["state"] + ", " + res[2]["country"] + ".";
+            choiceThree.addEventListener('click', ()=>{getWeather(res[0]["lat"], res[0]["lon"]).then(res=>{view.createWeatherView(res)})});initView.appendChild(choiceThree)};
         const goBack = document.createElement("button");
         goBack.innerHTML = "Return";
         goBack.addEventListener('click', () => {
@@ -72,8 +81,8 @@ const view = {
             view.createInitView();
         });
         initView.appendChild(choiceOne);
-        initView.appendChild(choiceTwo);
-        initView.appendChild(choiceThree);
+        //initView.appendChild(choiceTwo);
+        //initView.appendChild(choiceThree);
         initView.appendChild(goBack);
     },
     createWeatherView : function(res){
