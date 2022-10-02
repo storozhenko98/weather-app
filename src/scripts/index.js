@@ -2,7 +2,7 @@ import { getLocation } from './location-getter';
 import {getWeather} from './weather-getter';
 const mainView = document.querySelector("#mainView");
 
-//MainView
+//UI + Controller
 const view = {
     initializer : function(){
         const initView = document.createElement("div");
@@ -51,7 +51,6 @@ const view = {
         initView.appendChild(appTitle);
         initView.appendChild(locInput);
         initView.appendChild(submitButton);
-        mainView.appendChild(initView);
 
     },
     createChoiceView : function(res){
@@ -66,9 +65,16 @@ const view = {
         const choiceThree = document.createElement("button");
         choiceThree.innerHTML = res[2]["name"] + ", " + res[2]["state"] + ", " + res[2]["country"] + ".";
         choiceThree.addEventListener('click', ()=>{getWeather(res[0]["lat"], res[0]["lon"]).then(res=>{view.createWeatherView(res)})});
+        const goBack = document.createElement("button");
+        goBack.innerHTML = "Return";
+        goBack.addEventListener('click', () => {
+            initView.innerHTML = "";
+            view.createInitView();
+        });
         initView.appendChild(choiceOne);
         initView.appendChild(choiceTwo);
         initView.appendChild(choiceThree);
+        initView.appendChild(goBack);
     },
     createWeatherView : function(res){
         const initView = document.getElementById("initView");
@@ -81,10 +87,16 @@ const view = {
         cityTemp.innerHTML = tempCelc + "C / " + tempF + "F";
         const weatherDescription = document.createElement("div");
         weatherDescription.innerHTML = res["weather"][0]["description"];
+        const goBack = document.createElement("button");
+        goBack.innerHTML = "Return";
+        goBack.addEventListener('click', () => {
+            initView.innerHTML = "";
+            view.createInitView();
+        });
         initView.appendChild(cityName);
         initView.appendChild(cityTemp);
         initView.appendChild(weatherDescription);
-        mainView.appendChild(initView);
+        initView.appendChild(goBack);
     },
     createErrorView : () => {
         const initView = document.getElementById("initView");
@@ -117,16 +129,4 @@ const view = {
 };
 view.initializer();
 
-
-function populate(res){
-    const townOne = document.createElement("div");
-    townOne.innerHTML = res[0]["name"] + " " + res[0]["state"] + " " + res[0]["country"];
-    const townTwo = document.createElement("div");
-    townTwo.innerHTML = res[1]["name"] + " " + res[1]["state"] + " " + res[1]["country"];
-    const townThree = document.createElement("div");
-    townThree.innerHTML = res[2]["name"] + " " + res[2]["state"] + " " + res[2]["country"];
-    mainView.appendChild(townOne);
-    mainView.appendChild(townTwo);
-    mainView.appendChild(townThree);
-};
 
